@@ -117,3 +117,22 @@ The Azure Storage Explorer opens a tab when you click on a container (named "doc
 This allows you to upload files manually, which should then hit the breakpoints in the code.
 
 You can stop the code, upload files and restart the code, and the files will still be triggered and hit the breakpoints.
+
+## Errors
+
+### Debugging
+
+You will likely get this error on running/debugging from IDEA
+
+> Failed to start Worker Channel. Process fileName: %JAVA_HOME%/bin/java
+
+You have to go into the run configuration in IDEA and set JAVA_HOME as one of the key pairs.
+
+### Starting Azurite
+
+If you just start the blob service and not the queue service you will get errors like:
+
+> An unhandled exception has occurred. Host is shutting down.      
+> Microsoft.WindowsAzure.Storage: Connection refused. System.Net.Http: Connection refused. System.Private.CoreLib: Connection refused.
+
+Make sure both of the services are started.
