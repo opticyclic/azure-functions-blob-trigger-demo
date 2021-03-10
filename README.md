@@ -50,3 +50,62 @@ In this case the container is called `documents` and the `{name}` is the paramet
 
 When a new blob is created inside a container, the BlobTrigger is fired.
 If the Function is not running when the blob is added, the event will be queued until the Function starts again so that you don't miss any events.
+
+## Developing Locally
+
+Several steps are required to test and develop locally, and it won't work immediately on checkout without them.
+
+### Tools
+
+Install [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite) to emulate the Azure Storage and enable local development.
+
+Installing it using a VSCode extension sounds a bit weird, but it is simple to do and gives you an easier way to start and stop it.
+
+Install [Azure Storage Explorer](https://docs.microsoft.com/en-ca/azure/vs-azure-tools-storage-manage-with-storage-explorer?tabs=linux#attach-to-a-local-emulator) to browse the storage.
+
+It is probably best to use the snap package to install this on Ubuntu, so you don't have to install .NET.
+
+**NOTE:** Azure Storage Explorer only works with gnome-keyring and not any other password managers such as KWallet
+
+    sudo apt install gnome-keyring
+    sudo snap connect storage-explorer:password-manager-service :password-manager-service
+
+### Initialisation
+
+**Azurite:** From VSCode you can either click the `[Azure Blob Service]` AND the `[Azure Queue Service]` at the bottom of the window to start the service, or you can press F1 to open the command palette and type `Azurite: Start`
+
+**Azure Storage Explorer:** On first start it will open the Connect Dialog and at the bottom you can select `Local storage emulator`. 
+You can leave the defaults or change the Display Name if you wish.
+
+### Add A Container
+
+In Azure Storage Explorer expand Storage Accounts and find the account in the list that matches the display name you just created. 
+
+**_NOTE:_**  The `(Attached Containers)` account is not what you want!
+
+Under the account you will see `Blob Containers`, right-click on this and `Create Blob Container`. 
+Name it `documents` to match the code example.
+
+### Connection Strings
+
+The Java code refers to a connection:
+
+    @FunctionName("blobTrigger")
+    public void blobTrigger(
+            @BlobTrigger(
+                    name = "file",
+                    dataType = "binary",
+                    path = "documents/{name}",
+                    connection = "AzureWebJobsStorage"
+
+In order to connect this to Azurite, modify the `local.settings.json` to have `"AzureWebJobsStorage": "UseDevelopmentStorage=true",` e.g.
+
+    {
+      "IsEncrypted": false,
+      "Values": {
+        "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+        "FUNCTIONS_WORKER_RUNTIME": "java"
+      }
+    }
+
+This is a built-in shortcut for the full connection string to the emulator, which specifies the account name, the account key, and the emulator endpoints for each of the Azure Storage services.
