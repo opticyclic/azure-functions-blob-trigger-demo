@@ -37,3 +37,16 @@ The blob storage is structured in the following way:
 A storage account can include an unlimited number of containers, and a container can store an unlimited number of blobs.
 
 For this simple demo we don't need to worry about the types of blobs as "Block blobs" are suitable for the text and binary data that we will deal with.
+
+## How This Demo Works
+
+The BlobTrigger contains a path to the blobs inside a storage account.
+
+    @BlobTrigger(.....    
+    path = "documents/{name}",
+    .....)
+
+In this case the container is called `documents` and the `{name}` is the parameter that passes the blob name to the function.  
+
+When a new blob is created inside a container, the BlobTrigger is fired.
+If the Function is not running when the blob is added, the event will be queued until the Function starts again so that you don't miss any events.
