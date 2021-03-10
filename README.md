@@ -109,3 +109,11 @@ In order to connect this to Azurite, modify the `local.settings.json` to have `"
     }
 
 This is a built-in shortcut for the full connection string to the emulator, which specifies the account name, the account key, and the emulator endpoints for each of the Azure Storage services.
+
+## Test Files
+
+The Azure Storage Explorer opens a tab when you click on a container (named "documents" in our case).
+
+This allows you to upload files manually, which should then hit the breakpoints in the code.
+
+You can stop the code, upload files and restart the code, and the files will still be triggered and hit the breakpoints.
