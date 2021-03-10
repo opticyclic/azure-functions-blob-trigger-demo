@@ -1,0 +1,26 @@
+plugins {
+  id 'java'
+  id 'com.microsoft.azure.azurefunctions' version '1.5.1'
+}
+
+group 'com.github.opticyclic.azure'
+version '1.0.0-SNAPSHOT'
+
+wrapper {
+  distributionType = Wrapper.DistributionType.ALL
+}
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation 'com.microsoft.azure.functions:azure-functions-java-library:1.4.2'
+}
+
+azurefunctions {
+  appName = 'opticyclic-functions-blob-trigger-demo'
+}
